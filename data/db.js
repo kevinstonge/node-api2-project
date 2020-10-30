@@ -13,8 +13,11 @@ module.exports = {
   insertComment,
 };
 
+// function find() {
+//   return db('posts');
+// }
 function find() {
-  return db('posts');
+   return db('posts')
 }
 
 function findById(id) {
