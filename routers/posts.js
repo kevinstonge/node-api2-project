@@ -20,19 +20,24 @@ router.post('/', (req, res) => {
 router.post('/:id/comments', (req, res) => {
     const { id } = req.params;
     Posts.findById(id).then(post => {
-        const { text } = req.body;
-        if (text && text.length > 0) {
-            Posts.insertComment(req.body).then(comment => {
-                res.status(201).json(comment)
-            }).catch(e => {
-                res.status(500).json({ error: "There was an error while saving the comment to the database" })
-            });
+        if (post[0].id) {
+            const { text } = req.body;
+            if (text && text.length > 0) {
+                Posts.insertComment(req.body).then(comment => {
+                    res.status(201).json(comment)
+                }).catch(e => {
+                    res.status(500).json({ error: "There was an error while saving the comment to the database" })
+                });
+            }
+            else {
+                res.status(400).json({ errorMessage: "Please provide text for the comment" })
+            }
         }
         else {
-            res.status(400).json({ errorMessage: "Please provide text for the comment" })
+            res.status(404).json({error: "The post with the specified ID does not exist"})
         }
     }).catch(e => {
-        res.status(404).json({ errorMessage: "The post with the specified ID does not exist" });
+        res.status(500).json({ errorMessage: "The post information could not be retrieved" });
     })
 })
 
