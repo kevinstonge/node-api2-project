@@ -87,7 +87,7 @@ router.delete('/:id', (req, res) => {
             if (post[0].id) {
                 Posts.remove(id)
                     .then(deleted => {
-                        res.status(200).json(deleted);
+                        res.status(200).json(post);
                     })
                     .catch(e=>res.status(500).json({error:"The post could not be removed"}))
             }
@@ -103,7 +103,7 @@ router.put('/:id', (req, res) => {
                 const { title, contents } = req.body;
                 if (title && contents && title.length > 0 && contents.length > 0) {
                     Posts.update(id, req.body)
-                        .then(updated => res.status(200).json(updated))
+                        .then(updated => res.status(200).json(post))
                         .catch(e=>res.status(500).json({error:"The post information could not be modified"}))
                 }
                 else {
